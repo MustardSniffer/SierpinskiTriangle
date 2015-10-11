@@ -3,9 +3,9 @@
 
 #define DRAW_ALL_INSTANCES false
 
-// Magic constants (????) and directions
-static const float UP_SCALE   = 0.435f;
-static const float DIAG_SCALE = 0.705f;
+// ~*~MAGIC~*~ constants (found via math) and directions
+static const float UP_SCALE   = 0.4330127018922193234f; // sqrt(3) / 4
+static const float DIAG_SCALE = 0.7071067811865475244f; // sqrt(2) / 2
 static const vector3 Direction_UP         = glm::normalize( vector3(  0,  1, 0 ) );
 static const vector3 Direction_DOWN_LEFT  = glm::normalize( vector3( -1, -1, 0 ) );
 static const vector3 Direction_DOWN_RIGHT = glm::normalize( vector3(  1, -1, 0 ) );
