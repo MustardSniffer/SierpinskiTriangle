@@ -105,7 +105,7 @@ void AppClass::SetNumberOfIterations( int newIterations, float newScale )
 {
     if ( DRAW_ALL_INSTANCES )
     {
-        _iterations = glm::clamp( newIterations, 0, 15 );
+        _iterations = glm::clamp( newIterations, 0, 12 );
         _triangleScale = glm::clamp( newScale, 0.5f, 20.0f );
     }
     else
