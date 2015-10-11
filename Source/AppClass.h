@@ -21,10 +21,45 @@ class AppClass : public ReEngAppClass
 
     std::shared_ptr<MyMesh> _mesh;
     std::vector<matrix4> _matrices;
+    int _iterations;
+    float _triangleScale;
+
+    /// <summary>
+    /// Generates three triangles for the Sierpinski triangle.
+    /// </summary>
+    /// <param name="matrices">The list of matrices to add to.</param>
+    /// <param name="center">The center of the three triangles.</param>
+    /// <param name="scale">The scale to create the triangles at.</param>
+    /// <param name="iterations">The number of iterations.</param>
+    static void GenerateThreeTriangles( std::vector<matrix4>& matrices, vector3 center, float scale );
+
+    /// <summary>
+    /// The recursive helper for generating three triangles for the Sierpinski iteration.
+    /// </summary>
+    /// <param name="matrices">The list of matrices to add to.</param>
+    /// <param name="center">The center of the three triangles.</param>
+    /// <param name="scale">The scale to create the triangles at.</param>
+    /// <param name="iterations"></param>
+    static void RecursiveGenerateThreeTriangles( std::vector<matrix4>& matrices, vector3 center, float scale, int iterations );
+
+    /// <summary>
+    /// Calculates all Sierpinski triangle matrics.
+    /// </summary>
+    /// <param name="matrices">The matrices.</param>
+    /// <param name="scale">The whole triangle scale</param>
+    /// <param name="iterations">The total number of iterations.</param>
+    static void CalculateSierpinksiTriangleMatrices( std::vector<matrix4>& matrices, float scale, int iterations );
+
+    /// <summary>
+    /// Sets the total number of Sierpinski iterations.
+    /// </summary>
+    /// <param name="newIterations">The new number of iterations.</param>
+    /// <param name="newScale">The new scale.</param>
+    void SetNumberOfIterations( int newIterations, float newScale );
 
 public:
     /* Constructor */
-    AppClass( HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow ) : super( hInstance, lpCmdLine, nCmdShow ) {}
+    AppClass( HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow );
 
     /*
     InitWindow
