@@ -8,6 +8,7 @@ Date: 2015/08
 
 #include "RE\ReEngAppClass.h"
 #include "MyMesh.h"
+#include <memory>
 #include <SFML\Graphics.hpp>
 #include <vector>
 //#include <chrono>
@@ -16,12 +17,12 @@ using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 
 class AppClass : public ReEngAppClass
 {
-public:
     typedef ReEngAppClass super;
 
-    MyMesh* m_pMesh = nullptr;
+    std::shared_ptr<MyMesh> _mesh;
     std::vector<matrix4> _matrices;
 
+public:
     /* Constructor */
     AppClass( HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow ) : super( hInstance, lpCmdLine, nCmdShow ) {}
 
@@ -36,31 +37,31 @@ public:
     Initializes user specific variables, this is executed right after InitApplicationVariables,
     the purpose of this member function is to initialize member variables specific for this lesson
     */
-    virtual void InitVariables( void );
+    virtual void InitVariables();
 
     /*
     Update
     Updates the scene
     */
-    virtual void Update( void );
+    virtual void Update();
 
     /*
     Display
     Displays the scene
     */
-    virtual void Display( void );
+    virtual void Display();
 
     /*
     ProcessKeyboard
     Manage the response of key presses
     */
-    virtual void ProcessKeyboard( void );
+    virtual void ProcessKeyboard();
 
     /*
     ProcessMouse
     Manage the response of key presses and mouse position
     */
-    virtual void ProcessMouse( void );
+    virtual void ProcessMouse();
 };
 
 #endif //__APPLICATION_H_

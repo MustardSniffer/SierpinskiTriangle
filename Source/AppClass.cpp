@@ -1,62 +1,76 @@
 #include "AppClass.h"
+#include <assert.h>
 
+// Initialize the window
 void AppClass::InitWindow( String a_sWindowName )
 {
-    //Using Base InitWindow method
-    super::InitWindow( "Instance Rendering - Example" );
+    super::InitWindow( "Sierpinksi Triangle | Richard Selneck and Michelle Leadley" );
 }
 
-void AppClass::InitVariables( void )
+// Initialize custom variables
+void AppClass::InitVariables()
 {
     //Reserve Memory for a MyMeshClass object
-    m_pMesh = new MyMesh();
+    assert( ( _mesh = std::make_shared<MyMesh>() ) != nullptr && "Failed to allocate memory for the mesh!" );
 
-    m_pMesh->AddVertexPosition( vector3( 0.0f, 0.0f, 0.0f ) );
-    m_pMesh->AddVertexPosition( vector3( 1.0f, 0.0f, 0.0f ) );
-    m_pMesh->AddVertexPosition( vector3( 0.0f, 1.0f, 0.0f ) );
+    // Add the triangle points
+    _mesh->AddVertexPosition( vector3(  0.0f,  0.5f, 0.0f ) );
+    _mesh->AddVertexPosition( vector3( -0.5f, -0.5f, 0.0f ) );
+    _mesh->AddVertexPosition( vector3(  0.5f, -0.5f, 0.0f ) );
 
-    m_pMesh->AddVertexColor( REGREEN );
-    m_pMesh->AddVertexColor( RERED );
-    m_pMesh->AddVertexColor( REBLUE );
+    // Add the triangle colors
+    _mesh->AddVertexColor( REGREEN );
+    _mesh->AddVertexColor( RERED );
+    _mesh->AddVertexColor( REBLUE );
 
-    m_pMesh->CompileOpenGL3X();
+    // Compile the triangle mesh
+    _mesh->CompileOpenGL3X();
 
+
+    // Create the instance matrices
     _matrices.resize( 200 );
     for ( int i = 0; i < static_cast<int>( _matrices.size() ); ++i )
     {
-        _matrices[ i ] = glm::translate( vector3( 0.01f * -i, 0.0f, 1.0f * -i ) )
+        _matrices[ i ] = glm::translate( vector3( 0.0f, 0.0f, 1.0f * -i ) )
                        * glm::rotate( i * 5.0f, REAXISZ );
     }
 }
 
-void AppClass::Update( void )
+// Update the scene
+void AppClass::Update()
 {
-    //Update the system so it knows how much time has passed since the last call
+    // Update the timer
     m_pSystem->UpdateTime();
 
-    //Is the arcball active?
-    if ( m_bArcBall == true )
+    // Update the camera as either an arc-ball camera or an FPS camera
+    if ( m_bArcBall )
+    {
         m_qArcBall = ArcBall();
-
-    //Is the first person camera active?
-    if ( m_bFPC == true )
+    }
+    else if ( m_bFPC )
+    {
         CameraRotation();
+    }
 
-    //Calculate Camera
+    // Recalculate the camera's view matrix
     m_pCamera->CalculateView();
 
-    //print info into the console
-    printf( "FPS: %d            \r", m_pSystem->GetFPS() );//print the Frames per Second
+    // Print out the FPS
+    printf( "FPS: %d            \r", m_pSystem->GetFPS() );
 }
 
-void AppClass::Display( void )
+// Render the scene
+void AppClass::Display()
 {
-    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // clear the window
+    // Clear the window
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-    m_pGrid->Render( 1.0f, REAXIS::XZ ); //renders the grid with a 100 scale
+    // Draw the grid
+    m_pGrid->Render( 1.0f, REAXIS::XZ );
 
     // Instance render the mesh
-    m_pMesh->RenderList( glm::value_ptr( _matrices[ 0 ] ), static_cast<int>( _matrices.size() ) );
+    _mesh->RenderList( glm::value_ptr( _matrices[ 0 ] ), static_cast<int>( _matrices.size() ) );
 
-    m_pGLSystem->GLSwapBuffers(); //Swaps the OpenGL buffers
+    // Swap the OpenGL buffers
+    m_pGLSystem->GLSwapBuffers();
 }
