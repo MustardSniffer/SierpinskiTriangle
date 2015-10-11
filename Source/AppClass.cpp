@@ -70,7 +70,8 @@ void AppClass::InitWindow( String a_sWindowName )
 void AppClass::InitVariables()
 {
     //Reserve Memory for a MyMeshClass object
-    assert( ( _mesh = std::make_shared<MyMesh>() ) != nullptr && "Failed to allocate memory for the mesh!" );
+    _mesh = std::make_shared<MyMesh>();
+    assert( _mesh.get() != nullptr && "Failed to allocate memory for the mesh!" );
 
     // Add the triangle points
     const float length = 1.0f;
@@ -110,7 +111,7 @@ void AppClass::SetNumberOfIterations( int newIterations, float newScale )
     }
     else
     {
-        _iterations = glm::clamp( newIterations, 0, 4 );
+        _iterations = glm::clamp( newIterations, 0, 5 );
         _triangleScale = glm::clamp( newScale, 0.5f, 8.0f );
     }
     CalculateSierpinksiTriangleMatrices( _matrices, _triangleScale, _iterations );
