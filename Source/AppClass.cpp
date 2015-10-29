@@ -6,17 +6,17 @@
 // ~*~MAGIC~*~ constants (found via math) and directions
 static const float UP_SCALE   = 0.4330127018922193234f; // sqrt(3) / 4
 static const float DIAG_SCALE = 0.7071067811865475244f; // sqrt(2) / 2
-static const vector3 Direction_UP         = glm::normalize( vector3(  0,  1, 0 ) );
-static const vector3 Direction_DOWN_LEFT  = glm::normalize( vector3( -1, -1, 0 ) );
-static const vector3 Direction_DOWN_RIGHT = glm::normalize( vector3(  1, -1, 0 ) );
+static const vector3 Direction_UP         = glm::normalize( vector3(  0,  1, 0 ) ) * UP_SCALE;
+static const vector3 Direction_DOWN_LEFT  = glm::normalize( vector3( -1, -1, 0 ) ) * DIAG_SCALE;
+static const vector3 Direction_DOWN_RIGHT = glm::normalize( vector3(  1, -1, 0 ) ) * DIAG_SCALE;
 
 // Generates three triangles based off of the given center and scale
 void AppClass::GenerateThreeTriangles( std::vector<matrix4>& matrices, vector3 center, float scale )
 {
     matrix4 scaleMatrix = glm::scale( scale, scale, scale );
-    matrices.push_back( glm::translate( center + scale * UP_SCALE * Direction_UP )           * scaleMatrix );
-    matrices.push_back( glm::translate( center + scale * DIAG_SCALE * Direction_DOWN_LEFT )  * scaleMatrix );
-    matrices.push_back( glm::translate( center + scale * DIAG_SCALE * Direction_DOWN_RIGHT ) * scaleMatrix );
+    matrices.push_back( glm::translate( center + scale * Direction_UP )           * scaleMatrix );
+    matrices.push_back( glm::translate( center + scale * Direction_DOWN_LEFT )  * scaleMatrix );
+    matrices.push_back( glm::translate( center + scale * Direction_DOWN_RIGHT ) * scaleMatrix );
 }
 
 // The recursive helper for generating three triangles
@@ -28,9 +28,9 @@ void AppClass::RecursiveGenerateThreeTriangles( std::vector<matrix4>& matrices, 
     }
     else
     {
-        RecursiveGenerateThreeTriangles( matrices, center + scale * UP_SCALE   * Direction_UP,         scale * 0.5f, iterations - 1 );
-        RecursiveGenerateThreeTriangles( matrices, center + scale * DIAG_SCALE * Direction_DOWN_LEFT,  scale * 0.5f, iterations - 1 );
-        RecursiveGenerateThreeTriangles( matrices, center + scale * DIAG_SCALE * Direction_DOWN_RIGHT, scale * 0.5f, iterations - 1 );
+        RecursiveGenerateThreeTriangles( matrices, center + scale * Direction_UP,         scale * 0.5f, iterations - 1 );
+        RecursiveGenerateThreeTriangles( matrices, center + scale * Direction_DOWN_LEFT,  scale * 0.5f, iterations - 1 );
+        RecursiveGenerateThreeTriangles( matrices, center + scale * Direction_DOWN_RIGHT, scale * 0.5f, iterations - 1 );
     }
 }
 
